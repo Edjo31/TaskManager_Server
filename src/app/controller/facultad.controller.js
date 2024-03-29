@@ -1,8 +1,9 @@
 const facultad = require("../models/facultad.model");
-const vwFacultad=require('../views/facultad.view')
+const vwFacultad = require("../views/facultad.view");
 const {
   handleResponse,
   handleErrorResponse,
+  handleNull,
 } = require("../utilities/functions");
 
 exports.getAllFaculties = async (req, res) => {
@@ -14,7 +15,7 @@ exports.getAllFaculties = async (req, res) => {
   }
 };
 
-exports.getOneFalcuty = async (req, res) => {
+exports.getOneFaculty = async (req, res) => {
   try {
     const id_faculty = req.params.faculty_id;
     const findFaculty = await facultad.findOne({
@@ -22,7 +23,7 @@ exports.getOneFalcuty = async (req, res) => {
         idfacultad: id_faculty,
       },
     });
-    handleResponse(res, 200, findFaculty);
+   handleNull(res,findFaculty)
   } catch (err) {
     handleErrorResponse(500, err);
   }
@@ -80,7 +81,7 @@ exports.deleteFaculty = async (req, res) => {
     handleErrorResponse(500, err);
   }
 };
-exports.viewFaculties=async (req,res)=>{
-    const viewFaculties= await vwFacultad.findAll()
-    handleResponse(res,200,viewFaculties)
-}
+exports.viewFaculties = async (req, res) => {
+  const viewFaculties = await vwFacultad.findAll();
+  handleResponse(res, 200, viewFaculties);
+};
