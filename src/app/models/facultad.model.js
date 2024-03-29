@@ -1,9 +1,9 @@
 const {Sequelize,DataTypes,Model}=require('sequelize')
 const sequelize =require('../config/sequelizeConect')
 
-class Facultad extends Model {} 
+class Faculty extends Model {} 
 
-Facultad.init({
+Faculty.init({
     idfacultad:{
         type:DataTypes.INTEGER,
         primaryKey:true,
@@ -29,4 +29,4 @@ Facultad.init({
 }
 )
 
-module.exports=Facultad
+module.exports=Faculty

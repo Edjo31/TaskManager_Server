@@ -16,7 +16,7 @@ exports.getAllFaculties = async (req, res) => {
 
 exports.getOneFalcuty = async (req, res) => {
   try {
-    const id_faculty = req.params.facultad_id;
+    const id_faculty = req.params.faculty_id;
     const findFaculty = await facultad.findOne({
       where: {
         idfacultad: id_faculty,
@@ -42,7 +42,7 @@ exports.insertFaculty = async (req, res) => {
   }
 };
 exports.updateFaculty = async (req, res) => {
-  const id = req.params.facultad_id;
+  const id = req.params.faculty_id;
   const { nombre_facultad, descripcion } = req.body;
   try {
     await facultad.update(
@@ -63,7 +63,7 @@ exports.updateFaculty = async (req, res) => {
   }
 };
 exports.deleteFaculty = async (req, res) => {
-  const id = req.params.facultad_id;
+  const id = req.params.faculty_id;
   try {
     await facultad.update(
       {
