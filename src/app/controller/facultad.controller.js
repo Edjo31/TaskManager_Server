@@ -1,86 +1,51 @@
 const facultad = require("../models/facultad.model");
-const vwFacultad=require('../views/facultad.view')
+const vwFacultad = require("../views/facultad.view");
+const { handleCreateUpdate } = require("./globalController");
 const {
   handleResponse,
   handleErrorResponse,
+  handleNull,
 } = require("../utilities/functions");
+const id_colum = "idfacultad";
 
 exports.getAllFaculties = async (req, res) => {
   try {
-    const faculty = await facultad.findAll();
-    handleResponse(res, 200, faculty);
+    handleResponse(res, 200, await facultad.findAll());
   } catch (err) {
-    handleErrorResponse(500, err);
+    handleErrorResponse(res, 500, err);
   }
 };
 
-exports.getOneFalcuty = async (req, res) => {
+exports.getOneFaculty = async (req, res) => {
   try {
-    const id_faculty = req.params.facultad_id;
-    const findFaculty = await facultad.findOne({
-      where: {
-        idfacultad: id_faculty,
-      },
-    });
-    handleResponse(res, 200, findFaculty);
+    handleNull(
+      res,
+      await facultad.findOne({
+        where: {
+          idfacultad: req.params.faculty_id,
+        },
+      })
+    );
   } catch (err) {
-    handleErrorResponse(500, err);
+    handleErrorResponse(res, 500, err);
   }
 };
 exports.insertFaculty = async (req, res) => {
-  const { nombre_facultad, descripcion } = req.body;
-
-  try {
-    await facultad.create({
-      nombre_facultad,
-      descripcion,
-      estado: 1,
-    });
-    handleResponse(res, 200, "agregado con exito");
-  } catch (err) {
-    handleErrorResponse(500, err);
-  }
+  const data = ({ nombre_facultad, descripcion } = req.body);
+  await handleCreateUpdate(res, data, facultad);
 };
 exports.updateFaculty = async (req, res) => {
-  const id = req.params.facultad_id;
-  const { nombre_facultad, descripcion } = req.body;
-  try {
-    await facultad.update(
-      {
-        nombre_facultad,
-        descripcion,
-        estado: 2,
-      },
-      {
-        where: {
-          idfacultad: id,
-        },
-      }
-    );
-    handleResponse(res, 200, "editado con exito");
-  } catch (err) {
-    handleErrorResponse(500, err);
-  }
+  const { faculty_id } = req.params;
+  const data = ({ nombre_facultad, descripcion } = req.body);
+  data["estado"] = 2;
+  await handleCreateUpdate(res, data, facultad, faculty_id);
 };
 exports.deleteFaculty = async (req, res) => {
-  const id = req.params.facultad_id;
-  try {
-    await facultad.update(
-      {
-        estado: 4,
-      },
-      {
-        where: {
-          idfacultad: id,
-        },
-      }
-    );
-    handleResponse(res, 200, "Borrado con exito");
-  } catch (err) {
-    handleErrorResponse(500, err);
-  }
+  const data = { estado: 4 };
+  const { faculty_id } = req.params;
+  await handleCreateUpdate(res, data, facultad, faculty_id);
 };
-exports.viewFaculties=async (req,res)=>{
-    const viewFaculties= await vwFacultad.findAll()
-    handleResponse(res,200,viewFaculties)
-}
+exports.viewFaculties = async (req, res) => {
+  const viewFaculties = await vwFacultad.findAll();
+  handleResponse(res, 200, viewFaculties);
+};

@@ -1,20 +1,23 @@
-const { Sequelize, DataTypes, Model } = require("sequelize");
 const sequelize = require("../config/sequelizeConect");
+const { DataTypes, Model } = require("sequelize");
 
-class Faculty extends Model {}
+class Clase extends Model {}
 
-Faculty.init(
+Clase.init(
   {
-    idfacultad: {
+    idclase: {
       type: DataTypes.INTEGER,
       primaryKey: true,
-      autoIncrement: true,
     },
-    nombre_facultad: {
+    nombre_classe: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    descripcion: {
+    descripcion_clase: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    creditos: {
       type: DataTypes.STRING,
       allowNull: false,
     },
@@ -25,9 +28,9 @@ Faculty.init(
   },
   {
     sequelize,
-    tableName: "facultad",
+    tableName: "clase",
     timestamps: false,
   }
 );
 
-module.exports = Faculty;
+module.exports=Clase
