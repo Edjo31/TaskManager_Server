@@ -1,8 +1,9 @@
 const facultad = require("../models/facultad.model");
-const vwFacultad=require('../views/facultad.view')
+const vwFacultad = require("../views/facultad.view");
 const {
   handleResponse,
   handleErrorResponse,
+  handleNull,
 } = require("../utilities/functions");
 
 exports.getAllFaculties = async (req, res) => {
@@ -14,15 +15,15 @@ exports.getAllFaculties = async (req, res) => {
   }
 };
 
-exports.getOneFalcuty = async (req, res) => {
+exports.getOneFaculty = async (req, res) => {
   try {
-    const id_faculty = req.params.facultad_id;
+    const id_faculty = req.params.faculty_id;
     const findFaculty = await facultad.findOne({
       where: {
         idfacultad: id_faculty,
       },
     });
-    handleResponse(res, 200, findFaculty);
+   handleNull(res,findFaculty)
   } catch (err) {
     handleErrorResponse(500, err);
   }
@@ -42,7 +43,7 @@ exports.insertFaculty = async (req, res) => {
   }
 };
 exports.updateFaculty = async (req, res) => {
-  const id = req.params.facultad_id;
+  const id = req.params.faculty_id;
   const { nombre_facultad, descripcion } = req.body;
   try {
     await facultad.update(
@@ -63,7 +64,7 @@ exports.updateFaculty = async (req, res) => {
   }
 };
 exports.deleteFaculty = async (req, res) => {
-  const id = req.params.facultad_id;
+  const id = req.params.faculty_id;
   try {
     await facultad.update(
       {
@@ -80,7 +81,7 @@ exports.deleteFaculty = async (req, res) => {
     handleErrorResponse(500, err);
   }
 };
-exports.viewFaculties=async (req,res)=>{
-    const viewFaculties= await vwFacultad.findAll()
-    handleResponse(res,200,viewFaculties)
-}
+exports.viewFaculties = async (req, res) => {
+  const viewFaculties = await vwFacultad.findAll();
+  handleResponse(res, 200, viewFaculties);
+};
