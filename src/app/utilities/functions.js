@@ -4,23 +4,22 @@ exports.handleResponse = (res, status, body) => {
     body,
   });
 };
-exports.handleErrorResponse = (status, error) => {
+exports.handleErrorResponse = (res, status, error) => {
   res.status(status).send({
     error,
   });
 };
 
-exports.handleNull=(res,body)=>{
-  if(body){
+exports.handleNull = (res, body) => {
+  if (body) {
     res.status(200).send({
-      status:200,
-      body
-    })
-  }
-  else{
+      status: 200,
+      body,
+    });
+  } else {
     res.status(404).send({
-      status:404,
-      body:"Not found"
-    })
+      status: 404,
+      body: "Not found",
+    });
   }
-}
+};

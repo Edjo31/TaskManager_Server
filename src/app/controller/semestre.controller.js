@@ -1,5 +1,5 @@
 const Semester = require("../models/semestre.model");
-const semester = require("../models/semestre.model");
+const { handleCreateUpdate } = require("./globalController");
 const {
   handleResponse,
   handleErrorResponse,
@@ -8,8 +8,7 @@ const {
 
 exports.getSemesters = async (req, res) => {
   try {
-    const semesters = await semester.findAll();
-    handleResponse(res, 200, semesters);
+    handleResponse(res, 200, await Semester.findAll());
   } catch (err) {
     handleErrorResponse(500, err);
   }
@@ -17,73 +16,33 @@ exports.getSemesters = async (req, res) => {
 
 exports.getSemester = async (req, res) => {
   try {
-    const id = req.params.id_semester;
-    const semester = await Semester.findOne({
-      where: {
-        idsemestre: id,
-      },
-    });
-    handleNull(res,semester)
+    handleNull(
+      res,
+      await Semester.findOne({
+        where: {
+          idsemestre: req.params.id_semester,
+        },
+      })
+    );
   } catch (err) {
-    handleErrorResponse(500, err);
+    handleErrorResponse(res, 500, err);
   }
 };
 exports.addSemester = async (req, res) => {
-  const { semestre, fecha_inicio, fecha_final, periodo_academico } = req.body;
-  try {
-    await semester.create({
-      semestre,
-      fecha_inicio,
-      fecha_final,
-      periodo_academico,
-      estado: "1",
-    });
-    handleResponse(res, 201, "creado con exito");
-  } catch (err) {
-    handleErrorResponse(500, err);
-  }
+  const data = ({ semestre, fecha_inicio, fecha_final, periodo_academico } =
+    req.body);
+  await handleCreateUpdate(res, data, Semester);
 };
 
 exports.updateSemester = async (req, res) => {
-  const id = req.params.id_semester;
-  const { semestre, fecha_inicio, fecha_final, periodo_academico } = req.body;
-  try {
-    await semester.update(
-      {
-        semestre,
-        fecha_inicio,
-        fecha_final,
-        periodo_academico,
-        estado: 2,
-      },
-      {
-        where: {
-          idsemestre: id,
-        },
-      }
-    );
-
-    handleResponse(res, 200, "actualizado con exito");
-  } catch (err) {
-    handleErrorResponse(500, err);
-  }
+  const data = ({ semestre, fecha_inicio, fecha_final, periodo_academico } =
+    req.body);
+  data["estado"] = 2;
+  const { id_semester } = req.params;
+  await handleCreateUpdate(res, data, Semester, id_semester);
 };
 exports.deleteSemester = async (req, res) => {
-  const id = req.params.id_semester;
-
-  try {
-    await semester.update(
-      {
-        estado: 4,
-      },
-      {
-        where: {
-          idsemestre: id,
-        },
-      }
-    );
-    handleResponse(res, 200, "Borrado con exito");
-  } catch (err) {
-    handleErrorResponse(500, err);
-  }
+  const data = { estado: 4 };
+  const { id_semester } = req.params;
+  await handleCreateUpdate(res, data, Semester, id_semester);
 };

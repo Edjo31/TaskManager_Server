@@ -32,3 +32,5 @@ Clase.init(
     timestamps: false,
   }
 );
+
+module.exports=Clase
