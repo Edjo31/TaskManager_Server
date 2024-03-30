@@ -1,20 +1,27 @@
-const { Sequelize, DataTypes, Model } = require("sequelize");
 const sequelize = require("../config/sequelizeConect");
+const { DataTypes, Model } = require("sequelize");
 
-class Faculty extends Model {}
+class Semester extends Model {}
 
-Faculty.init(
+Semester.init(
   {
-    idfacultad: {
+    idsemestre: {
       type: DataTypes.INTEGER,
       primaryKey: true,
-      autoIncrement: true,
     },
-    nombre_facultad: {
+    semestre: {
       type: DataTypes.STRING,
+      allowNullL: false,
+    },
+    fecha_inicio: {
+      type: DataTypes.DATE,
       allowNull: false,
     },
-    descripcion: {
+    fecha_final: {
+      type: DataTypes.DATE,
+      allowNull: false,
+    },
+    periodo_academico: {
       type: DataTypes.STRING,
       allowNull: false,
     },
@@ -25,9 +32,9 @@ Faculty.init(
   },
   {
     sequelize,
-    tableName: "facultad",
+    tableName: "semestre",
     timestamps: false,
   }
 );
 
-module.exports = Faculty;
+module.exports = Semester;
